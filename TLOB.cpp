@@ -5,9 +5,9 @@ TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin){
   pinMode(led0Pin, OUTPUT);
   pinMode(led1Pin, OUTPUT);
   pinMode(led2Pin, OUTPUT);
-  _led0Pin = led0Pin;
-  _led1Pin = led1Pin;
-  _led2Pin = led2Pin;
+  ledPins[0] = led0Pin;
+  ledPins[1] = led1Pin;
+  ledPins[2] = led2Pin;
   _buttonPin = buttonPin;
   // default debounce time
   debounceTime = 15;
@@ -16,8 +16,6 @@ TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin){
 
 void TLOB::updateButton(){
   // update button on the beginning of each step. 
-
-  // TODO: add debouncing
 
   // false by default
   buttonReleased = false;
@@ -59,7 +57,7 @@ void TLOB::updateButton(){
 }
 
 void TLOB::updateLeds(){
-  // update leds at end of each step.
+  // update leds at end of each step, like when using the leds[] array or when blinking.
   
   // blinking
   for (int led = 0; led < 3; led++){
@@ -73,9 +71,9 @@ void TLOB::updateLeds(){
   }
   
   // update the leds
-  digitalWrite( _led0Pin, leds[0]);
-  digitalWrite( _led1Pin, leds[1]);
-  digitalWrite( _led2Pin, leds[2]);
+  digitalWrite( ledPins[0], leds[0]);
+  digitalWrite( ledPins[1], leds[1]);
+  digitalWrite( ledPins[2], leds[2]);
 }
 
 void TLOB::update(){
@@ -84,15 +82,15 @@ void TLOB::update(){
 }
 
 void TLOB::allOn(){
-  leds[0] = true;
-  leds[1] = true;
-  leds[2] = true;
+  led(0, true);
+  led(1, true);
+  led(2, true);
 }
 
 void TLOB::allOff(){
-  leds[0] = false;
-  leds[1] = false;
-  leds[2] = false;
+  led(0, false);
+  led(1, false);
+  led(2, false);
 }
 
 int TLOB::next(int n){
@@ -113,7 +111,12 @@ void TLOB::blink(int led, unsigned int onTime, unsigned int offTime){
   blinkOff[led] = offTime;
   blinkStart[led] = millis();
 }
-    
+
+void TLOB::blinkAll(unsigned int onTime, unsigned int offTime){
+  blink(0, onTime, offTime);
+  blink(1, onTime, offTime);
+  blink(2, onTime, offTime);
+}
     
 void TLOB::stop(int led){
   //stops the blinking.
@@ -126,3 +129,16 @@ void TLOB::allStop(){
   blinking[1] = false;
   blinking[2] = false;
 }
+
+int TLOB::led(int led, bool state){
+  // set led
+  digitalWrite(ledPins[led], state);
+  return leds[led] = state;
+}
+
+int TLOB::led(int led){
+  // read led state
+  return leds[led];
+}
+
+// const int light = TLOB::led;
