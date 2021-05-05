@@ -10,7 +10,7 @@ TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin){
   ledPins[2] = led2Pin;
   _buttonPin = buttonPin;
   // default debounce time
-  debounceTime = 15;
+  debounceTime = 25;
   holdTimer = 0;
 }
 
@@ -76,6 +76,7 @@ void TLOB::updateLeds(){
   digitalWrite( ledPins[2], leds[2]);
 }
 
+// update both button & leds
 void TLOB::update(){
   updateButton();
   updateLeds();
@@ -87,10 +88,20 @@ void TLOB::allOn(){
   led(2, true);
 }
 
+// alias
+void TLOB::onAll(){
+  allOn();
+}
+
 void TLOB::allOff(){
   led(0, false);
   led(1, false);
   led(2, false);
+}
+
+// alias
+void TLOB::offAll(){
+  allOff();
 }
 
 int TLOB::next(int n){
@@ -117,17 +128,27 @@ void TLOB::blinkAll(unsigned int onTime, unsigned int offTime){
   blink(1, onTime, offTime);
   blink(2, onTime, offTime);
 }
+
+// alias
+void TLOB::allBlink(unsigned int onTime, unsigned int offTime){
+  blinkAll(onTime, offTime);
+}
     
 void TLOB::stop(int led){
   //stops the blinking.
   blinking[led] = false;
 }
 
-void TLOB::allStop(){
+void TLOB::stopAll(){
   //stops all blinking.
   blinking[0] = false;
   blinking[1] = false;
   blinking[2] = false;
+}
+
+// alias
+void TLOB::allStop(){
+  stopAll();
 }
 
 int TLOB::led(int led, bool state){

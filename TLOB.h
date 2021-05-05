@@ -13,7 +13,7 @@ class TLOB {
     bool buttonDown;
     bool buttonPressed;
     bool buttonReleased;
-    unsigned long buttonHold;
+    unsigned long buttonHold; // time a button is down
     bool leds[3];
     int debounceTime;
     void updateButton();
@@ -21,12 +21,12 @@ class TLOB {
     void update();
     void allOn();
     void allOff();
-    void allStop();
     int next(int n);
     int prev(int n);
     void blink(int led, unsigned int onTime = 100, unsigned int offTime = 0);
     void blinkAll(unsigned int onTime = 100, unsigned int offTime = 0);
     void stop(int led);
+    void stopAll();
     bool blinking[3];
     unsigned int blinkOn[3];
     unsigned int blinkOff[3];
