@@ -21,12 +21,16 @@ class TLOB {
     void update();
     void allOn();
     void allOff();
+    void onAll(); // alias
+    void offAll(); // alias
     int next(int n);
     int prev(int n);
     void blink(int led, unsigned int onTime = 100, unsigned int offTime = 0);
     void blinkAll(unsigned int onTime = 100, unsigned int offTime = 0);
+    void allBlink(unsigned int onTime = 100, unsigned int offTime = 0); // alias
     void stop(int led);
     void stopAll();
+    void allStop(); // alias
     bool blinking[3];
     unsigned int blinkOn[3];
     unsigned int blinkOff[3];

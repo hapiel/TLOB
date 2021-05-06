@@ -117,10 +117,14 @@ void TLOB::blink(int led, unsigned int onTime, unsigned int offTime){
   if (offTime == 0){
     offTime = onTime;
   }
-  blinking[led] = true;
-  blinkOn[led] = onTime;
-  blinkOff[led] = offTime;
-  blinkStart[led] = millis();
+
+  // I had a bug in code when blink(-1,100) was accidentally entered. Lets check for odd numbers, is that the best fix?
+  if (led >= 0 && led <= 2){
+    blinking[led] = true;
+    blinkOn[led] = onTime;
+    blinkOff[led] = offTime;
+    blinkStart[led] = millis();
+  }
 }
 
 void TLOB::blinkAll(unsigned int onTime, unsigned int offTime){
@@ -136,7 +140,9 @@ void TLOB::allBlink(unsigned int onTime, unsigned int offTime){
     
 void TLOB::stop(int led){
   //stops the blinking.
-  blinking[led] = false;
+  if (led >= 0 && led <= 2){
+    blinking[led] = false;
+  }
 }
 
 void TLOB::stopAll(){
@@ -153,13 +159,17 @@ void TLOB::allStop(){
 
 int TLOB::led(int led, bool state){
   // set led
-  digitalWrite(ledPins[led], state);
-  return leds[led] = state;
+  if (led >= 0 && led <= 2){
+    digitalWrite(ledPins[led], state);
+    return leds[led] = state;
+  }
 }
 
 int TLOB::led(int led){
   // read led state
-  return leds[led];
+  if (led >= 0 && led <= 2){
+    return leds[led];
+  }
 }
 
 // const int light = TLOB::led;
