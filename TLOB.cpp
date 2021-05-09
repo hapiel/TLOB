@@ -10,7 +10,7 @@ TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin){
   ledPins[2] = led2Pin;
   _buttonPin = buttonPin;
   // default debounce time
-  _debounceTime = 25;
+  _debounceTime = 15;
   holdTimer = 0;
 }
 
