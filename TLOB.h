@@ -36,16 +36,16 @@ class TLOB {
 
 
   private:
-    int debounceTime;
+    int _debounceTime;
     int ledPins[3];
     int _buttonPin;
     bool buttonState;
     unsigned long holdTimer;
     unsigned long blinkStart[3];
-    bool buttonDown;
-    bool buttonPressed;
-    bool buttonReleased;
-    unsigned long buttonHold;
+    bool _buttonDown;
+    bool _buttonPressed;
+    bool _buttonReleased;
+    unsigned long _buttonHold;
     bool leds[3];
     bool blinking[3];
     unsigned int blinkOn[3];

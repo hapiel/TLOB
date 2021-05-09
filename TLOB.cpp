@@ -10,7 +10,7 @@ TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin){
   ledPins[2] = led2Pin;
   _buttonPin = buttonPin;
   // default debounce time
-  debounceTime = 25;
+  _debounceTime = 25;
   holdTimer = 0;
 }
 
@@ -59,31 +59,31 @@ void TLOB::stopAll(){
 
 // is the button down
 bool TLOB::buttonDown(){
-  return buttonDown;
+  return _buttonDown;
 }
 
 // has the button been pressed since the last updateButton(), debounced
 bool TLOB::buttonPressed(){
-  return buttonPressed;
+  return _buttonPressed;
 }
 
 // has the button been released since the last updateButton(), debounced or delayed if pressed within the debounce time
 bool TLOB::buttonReleased(){
-  return buttonReleased;
+  return _buttonReleased;
 }
 
 // how long has the button been held. 0 if not down
 unsigned long TLOB::buttonHold(){
-  return buttonHold;
+  return _buttonHold;
 }
 
 // change the debounce time
 int TLOB::debounceTime(unsigned int time){
   // default of time is 0
   if(time){
-    debounceTime = time;
+    _debounceTime = time;
   }
-  return debounceTime;
+  return _debounceTime;
 }
 
 bool TLOB::led(int led, bool state){
@@ -127,21 +127,21 @@ void TLOB::update(){
 void TLOB::updateButton(){
 
   // false by default
-  buttonReleased = false;
-  buttonPressed = false;
-  buttonHold = 0;
+  _buttonReleased = false;
+  _buttonPressed = false;
+  _buttonHold = 0;
 
   // get state ASAP so all reads are definitely the same, except if within debounce time.
-  if (holdTimer + debounceTime < millis()){
+  if (holdTimer + _debounceTime < millis()){
     buttonState = digitalRead(_buttonPin);
   }
 
   // no button down registered yet
-  if (!buttonDown) {
+  if (!_buttonDown) {
 
     // but physical button is down
     if (buttonState) {
-      buttonPressed = true;
+      _buttonPressed = true;
 
       // record time
       holdTimer = millis();
@@ -152,16 +152,16 @@ void TLOB::updateButton(){
     // if button is still down
     if (buttonState) {
       // time since time recorded
-      buttonHold = millis() - holdTimer;
+      _buttonHold = millis() - holdTimer;
 
     // button was released this step
     } else {
-      buttonReleased = true;
+      _buttonReleased = true;
     }
   }
 
   // set buttonDown to physical button state
-  buttonDown = buttonState;
+  _buttonDown = buttonState;
   
 }
 
