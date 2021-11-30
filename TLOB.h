@@ -9,7 +9,7 @@
 
 class TLOB {
   public:
-    TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin);
+    TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin, int buttonMode = 0);
 
     void blink(int led, unsigned int onTime = 100, unsigned int offTime = 0);
     void blinkAll(unsigned int onTime = 100, unsigned int offTime = 0);
@@ -42,6 +42,7 @@ class TLOB {
     bool buttonState;
     unsigned long holdTimer;
     unsigned long blinkStart[3];
+    int _buttonMode;
     bool _buttonDown;
     bool _buttonPressed;
     bool _buttonReleased;

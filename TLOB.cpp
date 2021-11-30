@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "TLOB.h"
 
-TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin){
+TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin, int buttonMode){
   pinMode(led0Pin, OUTPUT);
   pinMode(led1Pin, OUTPUT);
   pinMode(led2Pin, OUTPUT);
@@ -9,6 +9,10 @@ TLOB::TLOB(int led0Pin, int led1Pin, int led2Pin, int buttonPin){
   ledPins[1] = led1Pin;
   ledPins[2] = led2Pin;
   _buttonPin = buttonPin;
+  _buttonMode = buttonMode; // 0 for INPUT_PULLUP, 1 for pullup, 2 for pulldown
+  if(_buttonMode == 0){
+    pinMode(_buttonPin, INPUT_PULLUP);
+  }
   // default debounce time
   _debounceTime = 15;
   holdTimer = 0;
@@ -133,7 +137,13 @@ void TLOB::updateButton(){
 
   // get state ASAP so all reads are definitely the same, except if within debounce time.
   if (holdTimer + _debounceTime < millis()){
-    buttonState = digitalRead(_buttonPin);
+
+    // buttonState is true when button is down
+    if (_buttonMode == 2){
+      buttonState = digitalRead(_buttonPin);
+    } else{
+      buttonState = !digitalRead(_buttonPin);
+    }
   }
 
   // no button down registered yet
